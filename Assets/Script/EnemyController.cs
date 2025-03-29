@@ -1,15 +1,16 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
+
     //敵人有屬性:速度、攻擊力、生命值
     [Tooltip("速度")]public static float speed = 0.5f;
     [Tooltip("攻擊力")]public static int attack = 60;
     [Tooltip("生命值")]public static int Max_hp = 100;
     public int currentHP;
-
     bool findSolider;
     Animator anim;
 
@@ -19,7 +20,6 @@ public class EnemyController : MonoBehaviour
     //製作血條的UI
     public GameObject HPBar;
     Slider HPSlider;
-
 
 
     public void getDamage(int damage)

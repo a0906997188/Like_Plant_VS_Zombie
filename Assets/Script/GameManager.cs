@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     [Tooltip("生成第一個敵人的時間0~10s")]
     [Range(0, 10)] public float startTime = 3;
     float RandomRange; // 我要的隨機生成敵人的時間
+    public float MaxRandomRange = 8.0f; // 最大隨機生成敵人的時間
 
     [Tooltip("敵人數量")]public int TotalNumberOfEnemies = 15; // 总共的敌人数量
 
@@ -23,9 +24,45 @@ public class GameManager : MonoBehaviour
     public GameObject LosePanel;
     private void Awake()
     {
-        Instance = this;
         DontDestroyOnLoad(this.gameObject);
+        Instance = this;
         Instance.TotalNumberOfEnemies = TotalNumberOfEnemies;
+
+        //場景不同，確認敵人數量及屬性
+        int a = SceneManager.GetActiveScene().buildIndex;
+        switch (a)
+        {
+            case 1+1:
+                Instance.TotalNumberOfEnemies = 5;
+                EnemyController.speed = 0.5f;
+                EnemyController.attack = 30;
+                EnemyController.Max_hp = 100;
+                break;
+            case 2 + 1:
+                Instance.TotalNumberOfEnemies = 10;
+                EnemyController.speed = 0.7f;
+                EnemyController.attack = 40;
+                EnemyController.Max_hp = 120;
+                break;
+            case 3 + 1:
+                Instance.TotalNumberOfEnemies = 15;
+                EnemyController.speed = 1f;
+                EnemyController.attack = 60;
+                EnemyController.Max_hp = 150;
+                break;
+            case 4 + 1:
+                Instance.TotalNumberOfEnemies = 20;
+                EnemyController.speed = 1.3f;
+                EnemyController.attack = 90;
+                EnemyController.Max_hp = 180;
+                break;
+            case 5 + 1:
+                Instance.TotalNumberOfEnemies = 25;
+                EnemyController.speed = 1.5f;
+                EnemyController.attack = 100;
+                EnemyController.Max_hp = 200;
+                break;
+        }
 
     }
 
@@ -67,7 +104,7 @@ public class GameManager : MonoBehaviour
         {
             
             Instantiate(Enemy,EnemyInstantPlace.transform.GetChild(Random.Range(0, 5)).transform.position , Quaternion.identity);
-            RandomRange = Random.Range(0f, 8.0f);
+            RandomRange = Random.Range(0f, MaxRandomRange);
             yield return new WaitForSeconds(RandomRange);
         }
     }
@@ -89,6 +126,8 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(1);
         LosePanel.SetActive(true);
     }
+
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Enemy"))
